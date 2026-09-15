@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141B2D"/>
+      <stop offset="100%" stop-color="#1E1E38"/>
+    </linearGradient>
+    <linearGradient id="cardGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(26, 34, 56, 0.9)"/>
+      <stop offset="100%" stop-color="rgba(15, 23, 42, 0.95)"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="360" rx="16" fill="url(#bgGrad3)"/>
+
+  <!-- Subtle glow -->
+  <circle cx="300" cy="180" r="140" fill="#8B5CF6" opacity="0.12" filter="blur(40px)"/>
+
+  <!-- Application Window -->
+  <rect x="65" y="45" width="470" height="270" rx="12" fill="url(#cardGrad3)" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Window Header -->
+  <rect x="65" y="45" width="470" height="36" rx="12" fill="#0E1626"/>
+  <rect x="65" y="69" width="470" height="12" fill="#0E1626"/>
+  <line x1="65" y1="81" x2="535" y2="81" stroke="#2D3748" stroke-width="1"/>
+
+  <!-- Window controls -->
+  <circle cx="87" cy="63" r="5" fill="#EF4444"/>
+  <circle cx="103" cy="63" r="5" fill="#F59E0B"/>
+  <circle cx="119" cy="63" r="5" fill="#10B981"/>
+
+  <text x="145" y="67" fill="#CBD5E1" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600">Productivity &amp; Task Master</text>
+  <rect x="420" y="55" width="95" height="18" rx="9" fill="rgba(139, 92, 246, 0.2)"/>
+  <text x="432" y="68" fill="#C084FC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="600">⚡ LocalStorage</text>
+
+  <!-- Columns (Kanban / Categorized layout) -->
+  <!-- Column 1: In Progress -->
+  <rect x="80" y="95" width="135" height="205" rx="8" fill="#111A2E" stroke="#1E293B" stroke-width="1"/>
+  <text x="92" y="113" fill="#94A3B8" font-family="sans-serif" font-size="10" font-weight="700">IN PROGRESS</text>
+  <circle cx="195" cy="110" r="8" fill="#3B82F6" opacity="0.2"/>
+  <text x="192" y="113" fill="#60A5FA" font-family="sans-serif" font-size="9" font-weight="700">2</text>
+
+  <!-- Card 1A -->
+  <rect x="88" y="125" width="119" height="70" rx="6" fill="#1A253C" stroke="#2B3956" stroke-width="1"/>
+  <rect x="96" y="135" width="40" height="12" rx="3" fill="rgba(239, 68, 68, 0.2)"/>
+  <text x="100" y="144" fill="#F87171" font-family="sans-serif" font-size="7" font-weight="700">HIGH</text>
+  <text x="96" y="162" fill="#F1F5F9" font-family="sans-serif" font-size="9" font-weight="600">Solve DSA 5 Questions</text>
+  <rect x="96" y="176" width="70" height="5" rx="2" fill="#334155"/>
+  <rect x="96" y="176" width="45" height="5" rx="2" fill="#38BDF8"/>
+
+  <!-- Card 1B -->
+  <rect x="88" y="205" width="119" height="65" rx="6" fill="#1A253C" stroke="#2B3956" stroke-width="1"/>
+  <rect x="96" y="215" width="44" height="12" rx="3" fill="rgba(245, 158, 11, 0.2)"/>
+  <text x="100" y="224" fill="#FBBF24" font-family="sans-serif" font-size="7" font-weight="700">MEDIUM</text>
+  <text x="96" y="242" fill="#F1F5F9" font-family="sans-serif" font-size="9" font-weight="600">Review OS Semaphores</text>
+
+  <!-- Column 2: Completed -->
+  <rect x="230" y="95" width="135" height="205" rx="8" fill="#111A2E" stroke="#1E293B" stroke-width="1"/>
+  <text x="242" y="113" fill="#10B981" font-family="sans-serif" font-size="10" font-weight="700">COMPLETED</text>
+  <circle cx="345" cy="110" r="8" fill="#10B981" opacity="0.2"/>
+  <text x="342" y="113" fill="#34D399" font-family="sans-serif" font-size="9" font-weight="700">3</text>
+
+  <!-- Completed Card 2A -->
+  <rect x="238" y="125" width="119" height="52" rx="6" fill="#13232E" stroke="#1B3838" stroke-width="1"/>
+  <circle cx="250" cy="142" r="6" fill="#10B981"/>
+  <path d="M 248 142 L 250 144 L 254 139" stroke="#0F172A" stroke-width="1.5" fill="none"/>
+  <text x="262" y="145" fill="#94A3B8" font-family="sans-serif" font-size="9" text-decoration="line-through">Build Portfolio UI</text>
+
+  <!-- Completed Card 2B -->
+  <rect x="238" y="185" width="119" height="52" rx="6" fill="#13232E" stroke="#1B3838" stroke-width="1"/>
+  <circle cx="250" cy="202" r="6" fill="#10B981"/>
+  <path d="M 248 202 L 250 204 L 254 199" stroke="#0F172A" stroke-width="1.5" fill="none"/>
+  <text x="262" y="205" fill="#94A3B8" font-family="sans-serif" font-size="9" text-decoration="line-through">Git &amp; GitHub Setup</text>
+
+  <!-- Column 3: Quick Add & Productivity Stats -->
+  <rect x="380" y="95" width="140" height="205" rx="8" fill="#111A2E" stroke="#1E293B" stroke-width="1"/>
+  <text x="392" y="113" fill="#94A3B8" font-family="sans-serif" font-size="10" font-weight="700">STATS &amp; FILTERS</text>
+
+  <rect x="390" y="125" width="120" height="42" rx="6" fill="#192237"/>
+  <text x="400" y="140" fill="#94A3B8" font-family="sans-serif" font-size="8">Completion Rate</text>
+  <text x="400" y="157" fill="#A78BFA" font-family="sans-serif" font-size="13" font-weight="700">85% Completed</text>
+
+  <!-- Filter tags -->
+  <rect x="390" y="180" width="55" height="18" rx="4" fill="rgba(56, 189, 248, 0.15)"/>
+  <text x="398" y="193" fill="#38BDF8" font-family="sans-serif" font-size="8" font-weight="600">All (8)</text>
+
+  <rect x="452" y="180" width="58" height="18" rx="4" fill="#1E293B"/>
+  <text x="459" y="193" fill="#94A3B8" font-family="sans-serif" font-size="8">College</text>
+
+  <rect x="390" y="206" width="55" height="18" rx="4" fill="#1E293B"/>
+  <text x="398" y="219" fill="#94A3B8" font-family="sans-serif" font-size="8">Coding</text>
+
+  <rect x="452" y="206" width="58" height="18" rx="4" fill="#1E293B"/>
+  <text x="461" y="219" fill="#94A3B8" font-family="sans-serif" font-size="8">Projects</text>
+
+  <!-- Add button -->
+  <rect x="390" y="248" width="120" height="28" rx="6" fill="url(#purpleGrad)"/>
+  <text x="424" y="266" fill="#FFFFFF" font-family="sans-serif" font-size="9" font-weight="700">+ New Task</text>
+</svg>

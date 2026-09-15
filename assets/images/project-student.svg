@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#091E3A"/>
+      <stop offset="100%" stop-color="#102A45"/>
+    </linearGradient>
+    <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.0"/>
+    </linearGradient>
+    <linearGradient id="cardGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(15, 23, 42, 0.9)"/>
+      <stop offset="100%" stop-color="rgba(30, 41, 59, 0.9)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="360" rx="16" fill="url(#bgGrad2)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.08" stroke="#38BDF8" stroke-width="1">
+    <line x1="50" y1="0" x2="50" y2="360"/>
+    <line x1="150" y1="0" x2="150" y2="360"/>
+    <line x1="250" y1="0" x2="250" y2="360"/>
+    <line x1="350" y1="0" x2="350" y2="360"/>
+    <line x1="450" y1="0" x2="450" y2="360"/>
+    <line x1="550" y1="0" x2="550" y2="360"/>
+  </g>
+
+  <!-- Glow effect -->
+  <circle cx="280" cy="180" r="130" fill="#0284C7" opacity="0.15" filter="blur(35px)"/>
+
+  <!-- System Window Frame -->
+  <rect x="65" y="45" width="470" height="270" rx="12" fill="url(#cardGrad2)" stroke="#1E3A8A" stroke-width="1.5"/>
+
+  <!-- Window Header -->
+  <rect x="65" y="45" width="470" height="36" rx="12" fill="#0B1528"/>
+  <rect x="65" y="69" width="470" height="12" fill="#0B1528"/>
+  <line x1="65" y1="81" x2="535" y2="81" stroke="#1E293B" stroke-width="1"/>
+
+  <!-- Control Dots -->
+  <circle cx="87" cy="63" r="5" fill="#EF4444"/>
+  <circle cx="103" cy="63" r="5" fill="#F59E0B"/>
+  <circle cx="119" cy="63" r="5" fill="#10B981"/>
+
+  <text x="145" y="67" fill="#93C5FD" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">Student_Management_System.cpp</text>
+
+  <!-- Left Sidebar inside window -->
+  <rect x="65" y="81" width="100" height="234" fill="#0B1322"/>
+  <line x1="165" y1="81" x2="165" y2="315" stroke="#1E293B" stroke-width="1"/>
+
+  <rect x="75" y="95" width="80" height="18" rx="4" fill="rgba(56, 189, 248, 0.15)"/>
+  <text x="83" y="108" fill="#38BDF8" font-family="sans-serif" font-size="9" font-weight="600">Dashboard</text>
+
+  <text x="83" y="132" fill="#64748B" font-family="sans-serif" font-size="9">Students</text>
+  <text x="83" y="152" fill="#64748B" font-family="sans-serif" font-size="9">Courses</text>
+  <text x="83" y="172" fill="#64748B" font-family="sans-serif" font-size="9">Attendance</text>
+  <text x="83" y="192" fill="#64748B" font-family="sans-serif" font-size="9">Grades</text>
+  <text x="83" y="212" fill="#64748B" font-family="sans-serif" font-size="9">Reports</text>
+
+  <!-- Main Dashboard Area -->
+  <!-- Stats Cards -->
+  <rect x="180" y="95" width="105" height="48" rx="6" fill="#111C30" stroke="#1E293B" stroke-width="1"/>
+  <text x="190" y="110" fill="#94A3B8" font-family="sans-serif" font-size="8">Total Enrolled</text>
+  <text x="190" y="130" fill="#38BDF8" font-family="sans-serif" font-size="15" font-weight="700">1,248</text>
+
+  <rect x="295" y="95" width="105" height="48" rx="6" fill="#111C30" stroke="#1E293B" stroke-width="1"/>
+  <text x="305" y="110" fill="#94A3B8" font-family="sans-serif" font-size="8">Avg Performance</text>
+  <text x="305" y="130" fill="#10B981" font-family="sans-serif" font-size="15" font-weight="700">88.4%</text>
+
+  <rect x="410" y="95" width="110" height="48" rx="6" fill="#111C30" stroke="#1E293B" stroke-width="1"/>
+  <text x="420" y="110" fill="#94A3B8" font-family="sans-serif" font-size="8">Active Semesters</text>
+  <text x="420" y="130" fill="#F59E0B" font-family="sans-serif" font-size="15" font-weight="700">8 / 8</text>
+
+  <!-- Records Table Preview -->
+  <rect x="180" y="152" width="340" height="145" rx="6" fill="#0D1626" stroke="#1E293B" stroke-width="1"/>
+  
+  <!-- Table Header -->
+  <rect x="180" y="152" width="340" height="24" rx="6" fill="#142138"/>
+  <text x="195" y="168" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">ID</text>
+  <text x="245" y="168" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">STUDENT NAME</text>
+  <text x="365" y="168" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">BRANCH</text>
+  <text x="455" y="168" fill="#94A3B8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">CGPA</text>
+
+  <!-- Table Row 1 -->
+  <line x1="180" y1="202" x2="520" y2="202" stroke="#1E293B" stroke-width="1"/>
+  <text x="195" y="193" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="9">CS-101</text>
+  <text x="245" y="193" fill="#E2E8F0" font-family="sans-serif" font-size="9">Alex Rivera</text>
+  <text x="365" y="193" fill="#38BDF8" font-family="sans-serif" font-size="9">CSE</text>
+  <text x="455" y="193" fill="#10B981" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700">9.4</text>
+
+  <!-- Table Row 2 -->
+  <line x1="180" y1="230" x2="520" y2="230" stroke="#1E293B" stroke-width="1"/>
+  <text x="195" y="221" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="9">CS-102</text>
+  <text x="245" y="221" fill="#E2E8F0" font-family="sans-serif" font-size="9">Priya Sharma</text>
+  <text x="365" y="221" fill="#38BDF8" font-family="sans-serif" font-size="9">CSE</text>
+  <text x="455" y="221" fill="#10B981" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700">9.1</text>
+
+  <!-- Table Row 3 -->
+  <line x1="180" y1="258" x2="520" y2="258" stroke="#1E293B" stroke-width="1"/>
+  <text x="195" y="249" fill="#E2E8F0" font-family="'JetBrains Mono', monospace" font-size="9">CS-103</text>
+  <text x="245" y="249" fill="#E2E8F0" font-family="sans-serif" font-size="9">Ethan Chen</text>
+  <text x="365" y="249" fill="#818CF8" font-family="sans-serif" font-size="9">IT</text>
+  <text x="455" y="249" fill="#10B981" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="700">8.8</text>
+
+  <!-- Status pill bottom right -->
+  <rect x="390" y="270" width="120" height="18" rx="9" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.4)" stroke-width="1"/>
+  <circle cx="400" cy="279" r="3" fill="#10B981"/>
+  <text x="408" y="282" fill="#10B981" font-family="'JetBrains Mono', monospace" font-size="8">OOP &amp; File I/O Sync</text>
+</svg>
