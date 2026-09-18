@@ -659,4 +659,358 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   revealElements.forEach(el => revealObserver.observe(el));
+
+  // ==========================================================================
+  // 14. INTERACTIVE 3D COSMIC SPACE CANVAS ENGINE
+  // ==========================================================================
+  const spaceCanvas = document.getElementById('space-canvas');
+  if (spaceCanvas) {
+    const ctx = spaceCanvas.getContext('2d', { alpha: true });
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+
+    // Mouse & Parallax tracking
+    const mouse = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      normX: 0,
+      normY: 0,
+      targetX: 0,
+      targetY: 0,
+      currentX: 0,
+      currentY: 0,
+      isHovered: false,
+      lastMoveTime: performance.now(),
+      speed: 0,
+      prevX: 0,
+      prevY: 0
+    };
+
+    // Stardust particles following cursor
+    const stardust = [];
+    const maxStardust = 35;
+
+    // Shooting stars
+    const shootingStars = [];
+    let nextShootingStarTime = performance.now() + 2000;
+
+    // Multi-layer Starfield configuration
+    const STAR_COUNT = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 3800), 280);
+    const stars = [];
+
+    const starColors = [
+      { r: 255, g: 255, b: 255 }, // Pure White
+      { r: 0,   g: 242, b: 254 }, // Cyan
+      { r: 168, g: 85,  b: 247 }, // Violet
+      { r: 147, g: 197, b: 253 }, // Soft Ice Blue
+      { r: 253, g: 224, b: 71  }  // Stellar Amber Gold
+    ];
+
+    function resizeCanvas() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+
+      spaceCanvas.width = width * dpr;
+      spaceCanvas.height = height * dpr;
+      spaceCanvas.style.width = `${width}px`;
+      spaceCanvas.style.height = `${height}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Initialize stars if empty
+      if (stars.length === 0) {
+        initStars();
+      }
+    }
+
+    function initStars() {
+      stars.length = 0;
+      for (let i = 0; i < STAR_COUNT; i++) {
+        const z = Math.random() * 0.95 + 0.05; // 0.05 (far) to 1.0 (near)
+        const color = starColors[Math.floor(Math.random() * starColors.length)];
+        
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          z: z,
+          baseRadius: (Math.random() * 1.6 + 0.4) * (z * 0.8 + 0.2),
+          color: color,
+          alpha: Math.random() * 0.7 + 0.3,
+          baseAlpha: Math.random() * 0.6 + 0.25,
+          twinkleSpeed: Math.random() * 0.03 + 0.01,
+          twinkleOffset: Math.random() * Math.PI * 2,
+          isFlared: Math.random() > 0.88, // 12% bright stars with 4-point lens flare
+          flareSize: (Math.random() * 5 + 3) * z
+        });
+      }
+    }
+
+    // Interactive mousemove & touchmove handlers
+    function onPointerMove(clientX, clientY) {
+      mouse.x = clientX;
+      mouse.y = clientY;
+      mouse.normX = (clientX / width) * 2 - 1; // -1 to 1
+      mouse.normY = (clientY / height) * 2 - 1; // -1 to 1
+      mouse.targetX = mouse.normX;
+      mouse.targetY = mouse.normY;
+      mouse.isHovered = true;
+      mouse.lastMoveTime = performance.now();
+
+      // Compute cursor velocity
+      const dx = clientX - mouse.prevX;
+      const dy = clientY - mouse.prevY;
+      mouse.speed = Math.sqrt(dx * dx + dy * dy);
+      mouse.prevX = clientX;
+      mouse.prevY = clientY;
+
+      // Spawn stardust particles on movement
+      if (mouse.speed > 3 && stardust.length < maxStardust) {
+        const angle = Math.random() * Math.PI * 2;
+        const spread = Math.random() * 14;
+        stardust.push({
+          x: clientX + Math.cos(angle) * spread,
+          y: clientY + Math.sin(angle) * spread,
+          vx: (Math.random() - 0.5) * 1.5 - dx * 0.08,
+          vy: (Math.random() - 0.5) * 1.5 - dy * 0.08,
+          radius: Math.random() * 2 + 1,
+          alpha: 0.9,
+          color: Math.random() > 0.5 ? '0, 242, 254' : '168, 85, 247',
+          decay: Math.random() * 0.03 + 0.02
+        });
+      }
+
+      // Fast cursor swipe can trigger a shooting meteor!
+      if (mouse.speed > 55 && Math.random() > 0.85) {
+        spawnShootingStar(clientX, clientY, dx, dy);
+      }
+    }
+
+    window.addEventListener('mousemove', (e) => onPointerMove(e.clientX, e.clientY), { passive: true });
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    window.addEventListener('mouseleave', () => {
+      mouse.isHovered = false;
+      mouse.targetX = 0;
+      mouse.targetY = 0;
+    });
+
+    function spawnShootingStar(originX, originY, dirX, dirY) {
+      const startX = originX !== undefined ? originX : Math.random() * width;
+      const startY = originY !== undefined ? originY : Math.random() * (height * 0.5);
+
+      let angle = Math.PI / 4 + (Math.random() - 0.5) * 0.4; // Diagonal trajectory
+      if (dirX !== undefined && dirY !== undefined && (dirX !== 0 || dirY !== 0)) {
+        angle = Math.atan2(dirY, dirX);
+      }
+
+      const speed = Math.random() * 10 + 14;
+      const length = Math.random() * 80 + 70;
+
+      shootingStars.push({
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        length: length,
+        alpha: 1,
+        color: Math.random() > 0.4 ? '#00f2fe' : '#ffffff',
+        trailColor: Math.random() > 0.4 ? 'rgba(0, 242, 254, ' : 'rgba(168, 85, 247, '
+      });
+    }
+
+    // Animation Loop with Smooth Parallax Physics
+    let lastTime = performance.now();
+    let isRunning = true;
+
+    function render(currentTime) {
+      if (!isRunning) return;
+
+      const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
+      lastTime = currentTime;
+
+      // Smooth damping (LERP) for weightless floating space inertia
+      const easeFactor = 0.045;
+      mouse.currentX += (mouse.targetX - mouse.currentX) * easeFactor;
+      mouse.currentY += (mouse.targetY - mouse.currentY) * easeFactor;
+
+      // Subtle autonomous cosmic drift
+      const autonomousDriftX = Math.sin(currentTime * 0.0004) * 0.08;
+      const autonomousDriftY = Math.cos(currentTime * 0.0003) * 0.06;
+
+      const totalParallaxX = (mouse.currentX + autonomousDriftX) * 45; // Max 45px parallax shift
+      const totalParallaxY = (mouse.currentY + autonomousDriftY) * 45;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // --- 1. RENDER STARS & 3D PARALLAX ---
+      for (let i = 0; i < stars.length; i++) {
+        const star = stars[i];
+
+        // Parallax position based on 3D depth z
+        let renderX = star.x - totalParallaxX * star.z;
+        let renderY = star.y - totalParallaxY * star.z;
+
+        // Wrap around screen edges smoothly
+        if (renderX < -20) renderX += width + 40;
+        if (renderX > width + 20) renderX -= width + 40;
+        if (renderY < -20) renderY += height + 40;
+        if (renderY > height + 20) renderY -= height + 40;
+
+        // Twinkle pulsating alpha
+        const twinkle = Math.sin(currentTime * star.twinkleSpeed + star.twinkleOffset);
+        const currentAlpha = Math.max(0.1, Math.min(1, star.baseAlpha + twinkle * 0.35));
+
+        // Proximity glow to cursor (within 140px)
+        const distToMouse = Math.hypot(renderX - mouse.x, renderY - mouse.y);
+        let proximityBoost = 0;
+        if (distToMouse < 140) {
+          proximityBoost = (1 - distToMouse / 140) * 0.45;
+        }
+
+        const finalAlpha = Math.min(1, currentAlpha + proximityBoost);
+        const r = star.color.r;
+        const g = star.color.g;
+        const b = star.color.b;
+
+        // Draw star core
+        ctx.beginPath();
+        ctx.arc(renderX, renderY, star.baseRadius + proximityBoost * 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${finalAlpha})`;
+        ctx.shadowBlur = star.z > 0.6 ? 6 * star.z : 0;
+        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${finalAlpha})`;
+        ctx.fill();
+        ctx.shadowBlur = 0; // reset
+
+        // Draw 4-point cross glint on bright stars
+        if (star.isFlared && finalAlpha > 0.4) {
+          const flare = star.flareSize * (1 + twinkle * 0.2);
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${finalAlpha * 0.35})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(renderX - flare, renderY);
+          ctx.lineTo(renderX + flare, renderY);
+          ctx.moveTo(renderX, renderY - flare);
+          ctx.lineTo(renderX, renderY + flare);
+          ctx.stroke();
+        }
+
+        // Draw interactive constellation lines to nearby stars near mouse
+        if (distToMouse < 120) {
+          for (let j = i + 1; j < stars.length; j++) {
+            const other = stars[j];
+            let otherX = other.x - totalParallaxX * other.z;
+            let otherY = other.y - totalParallaxY * other.z;
+            const distBetween = Math.hypot(renderX - otherX, renderY - otherY);
+
+            if (distBetween < 80) {
+              const lineAlpha = (1 - distBetween / 80) * (1 - distToMouse / 120) * 0.25;
+              ctx.beginPath();
+              ctx.moveTo(renderX, renderY);
+              ctx.lineTo(otherX, otherY);
+              ctx.strokeStyle = `rgba(0, 242, 254, ${lineAlpha})`;
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // --- 2. RENDER SHOOTING STARS / METEORS ---
+      if (currentTime > nextShootingStarTime) {
+        spawnShootingStar();
+        nextShootingStarTime = currentTime + Math.random() * 4500 + 2500;
+      }
+
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const s = shootingStars[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.alpha -= 0.015;
+
+        if (s.alpha <= 0 || s.x < -100 || s.x > width + 100 || s.y > height + 100) {
+          shootingStars.splice(i, 1);
+          continue;
+        }
+
+        const tailX = s.x - (s.vx / Math.hypot(s.vx, s.vy)) * s.length;
+        const tailY = s.y - (s.vy / Math.hypot(s.vx, s.vy)) * s.length;
+
+        const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+        grad.addColorStop(0, `${s.trailColor}0)`);
+        grad.addColorStop(0.7, `${s.trailColor}${s.alpha * 0.5})`);
+        grad.addColorStop(1, `rgba(255, 255, 255, ${s.alpha})`);
+
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(s.x, s.y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.8;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        // Glowing head
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = s.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // --- 3. RENDER COSMIC STARDUST PARTICLES (CURSOR TRAIL) ---
+      for (let i = stardust.length - 1; i >= 0; i--) {
+        const p = stardust[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= p.decay;
+        p.radius = Math.max(0.2, p.radius * 0.96);
+
+        if (p.alpha <= 0) {
+          stardust.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = `rgba(${p.color}, ${p.alpha})`;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    // Handle window resize with debounce
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 150);
+    });
+
+    // Pause animation when tab is not active to save battery/GPU
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        isRunning = false;
+      } else {
+        isRunning = true;
+        lastTime = performance.now();
+        requestAnimationFrame(render);
+      }
+    });
+
+    // Initialize and start animation loop
+    resizeCanvas();
+    requestAnimationFrame(render);
+  }
 });
+

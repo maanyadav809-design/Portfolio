@@ -157,6 +157,18 @@ body {
   }
 }
 
+/* --- Interactive 3D Cosmic Space Canvas --- */
+.space-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -3;
+  display: block;
+  background: radial-gradient(ellipse at bottom, #0d1224 0%, #060911 60%, #030408 100%);
+}
+
 /* --- Ambient Background Glows & Grid --- */
 .ambient-glow {
   position: fixed;
@@ -164,7 +176,7 @@ body {
   filter: blur(120px);
   pointer-events: none;
   z-index: -2;
-  opacity: 0.45;
+  opacity: 0.35;
   animation: floatAmbient 18s ease-in-out infinite alternate;
 }
 
