@@ -576,42 +576,58 @@ document.addEventListener('DOMContentLoaded', () => {
       ? `[Portfolio - ${purposeLabel}] ${customSubject}` 
       : `[Portfolio - ${purposeLabel}] Message from ${senderName}`;
 
-    const emailBody = 
-`Hi Maan,
-
-Name: ${senderName}
-Email: ${senderEmail}
-Inquiry Category: ${purposeLabel}
-
-Message:
-${senderMessage}
-
-----------------------------------------
-Sent via Maan Yadav's Developer Portfolio Website`;
-
-    const mailtoUrl = `mailto:maanyadav809@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-
     // Button loading animation state
     if (submitBtn && submitBtnText) {
       submitBtn.disabled = true;
-      submitBtnText.textContent = 'Opening Email Client...';
+      submitBtnText.textContent = 'Sending Message...';
     }
 
-    showToast(`Opening your email client to send message to maanyadav809@gmail.com...`, 'info');
+    showToast(`Sending your message directly to Maan Yadav...`, 'info');
 
-    setTimeout(() => {
-      // Trigger user's mail client (Gmail, Outlook, Apple Mail)
-      window.location.href = mailtoUrl;
+    // Web3Forms API Payload
+    const payload = {
+      access_key: "481de044-f2f3-4ec9-ad22-d15e87a47dd3",
+      name: senderName,
+      email: senderEmail,
+      subject: emailSubject,
+      category: purposeLabel,
+      message: senderMessage,
+      from_name: `Portfolio Visitor (${senderName})`,
+      replyto: senderEmail
+    };
 
-      showToast(`Thank you, ${senderName}! If your mail app did not open, you can email maanyadav809@gmail.com directly.`, 'success');
-
-      contactForm.reset();
-      if (charCounter) charCounter.textContent = '0 / 500';
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(async (response) => {
+      const json = await response.json();
+      if (response.status === 200 && json.success) {
+        showToast(`🎉 Message delivered successfully! Maan Yadav will receive it at maanyadav809@gmail.com.`, 'success');
+        contactForm.reset();
+        if (charCounter) charCounter.textContent = '0 / 500';
+      } else {
+        showToast(`Notice: ${json.message || 'Error connecting to server'}. Opening your email client instead...`, 'error');
+        // Fallback to mailto
+        const mailtoFallback = `mailto:maanyadav809@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(senderMessage)}`;
+        window.location.href = mailtoFallback;
+      }
+    })
+    .catch((error) => {
+      showToast('Network error. Launching your email client as fallback...', 'error');
+      const mailtoFallback = `mailto:maanyadav809@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(senderMessage)}`;
+      window.location.href = mailtoFallback;
+    })
+    .finally(() => {
       if (submitBtn && submitBtnText) {
         submitBtn.disabled = false;
         submitBtnText.textContent = 'Send Message';
       }
-    }, 600);
+    });
   });
 
   // ==========================================================================
