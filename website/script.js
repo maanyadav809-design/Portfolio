@@ -554,14 +554,56 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Simulate sending with loading state
+    // Purpose chip selected
+    const selectedPurposeEl = document.querySelector('input[name="purpose"]:checked');
+    const purposeValue = selectedPurposeEl?.value || 'general';
+    const purposeMap = {
+      'internship': 'Internship / Job Opportunity',
+      'hackathon': 'Hackathon Team / Collab',
+      'project': 'Project Collaboration / Resilix',
+      'hello': 'Saying Hello / Networking'
+    };
+    const purposeLabel = purposeMap[purposeValue] || 'Portfolio Inquiry';
+
+    const subjectInput = document.getElementById('contact-subject');
+    const customSubject = subjectInput?.value.trim() || '';
+    const senderName = nameInput.value.trim();
+    const senderEmail = emailInput.value.trim();
+    const senderMessage = messageInput.value.trim();
+
+    // Prepare structured email content
+    const emailSubject = customSubject 
+      ? `[Portfolio - ${purposeLabel}] ${customSubject}` 
+      : `[Portfolio - ${purposeLabel}] Message from ${senderName}`;
+
+    const emailBody = 
+`Hi Maan,
+
+Name: ${senderName}
+Email: ${senderEmail}
+Inquiry Category: ${purposeLabel}
+
+Message:
+${senderMessage}
+
+----------------------------------------
+Sent via Maan Yadav's Developer Portfolio Website`;
+
+    const mailtoUrl = `mailto:maanyadav809@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
+    // Button loading animation state
     if (submitBtn && submitBtnText) {
       submitBtn.disabled = true;
-      submitBtnText.textContent = 'Transmitting Message...';
+      submitBtnText.textContent = 'Opening Email Client...';
     }
 
+    showToast(`Opening your email client to send message to maanyadav809@gmail.com...`, 'info');
+
     setTimeout(() => {
-      showToast(`Thank you, ${nameInput.value.trim()}! Your message has been received by Maan Yadav. I'll get back to you soon. 🚀`, 'success');
+      // Trigger user's mail client (Gmail, Outlook, Apple Mail)
+      window.location.href = mailtoUrl;
+
+      showToast(`Thank you, ${senderName}! If your mail app did not open, you can email maanyadav809@gmail.com directly.`, 'success');
 
       contactForm.reset();
       if (charCounter) charCounter.textContent = '0 / 500';
@@ -569,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.disabled = false;
         submitBtnText.textContent = 'Send Message';
       }
-    }, 900);
+    }, 600);
   });
 
   // ==========================================================================
